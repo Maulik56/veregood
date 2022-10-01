@@ -12,22 +12,22 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ProductModel(
-      isApproved: fields[8] as bool,
-      title: fields[0] as String,
-      coverImage: fields[1] as String,
-      chooseCategory: fields[2] as String,
-      productDescription: fields[3] as String,
-      quantity: fields[4] as String,
-      listOfImage: fields[5] as List<String>,
-      price: fields[6] as String,
-      availableColours: fields[7] as List<String>,
-    );
+        isApproved: fields[8] as bool,
+        title: fields[0] as String,
+        coverImage: fields[1] as String,
+        chooseCategory: fields[2] as String,
+        productDescription: fields[3] as String,
+        quantity: fields[4] as String,
+        listOfImage: fields[5] as List<String>,
+        price: fields[6] as String,
+        availableColours: fields[7] as List<String>,
+        variation: fields[9] as List<dynamic>);
   }
 
   @override
   void write(BinaryWriter writer, ProductModel obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -45,6 +45,8 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       ..writeByte(7)
       ..write(obj.availableColours)
       ..writeByte(8)
-      ..write(obj.isApproved);
+      ..write(obj.isApproved)
+      ..writeByte(9)
+      ..write(obj.variation);
   }
 }

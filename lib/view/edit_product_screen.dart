@@ -6,7 +6,6 @@ import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 import 'package:sizer/sizer.dart';
-import 'package:veregood_flutter/components/create_variation_dialog.dart';
 import 'package:veregood_flutter/components/textfield_widget.dart';
 import 'package:veregood_flutter/constant/color_const.dart';
 import 'package:veregood_flutter/main.dart';
@@ -350,17 +349,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    backgroundColor: blueColor1,
-                                    insetPadding:
-                                        EdgeInsets.symmetric(horizontal: 15.w),
-                                    child: CreateVariationDialog()),
-                              );
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (context) => Dialog(
+                              //       shape: RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.circular(20),
+                              //       ),
+                              //       backgroundColor: blueColor1,
+                              //       insetPadding:
+                              //           EdgeInsets.symmetric(horizontal: 15.w),
+                              //       child: CreateVariationDialog()),
+                              // );
                             },
                             child: Container(
                               height: 50.sp,

@@ -239,21 +239,19 @@ class _ProductScreenState extends State<ProductScreen>
                                                   SizedBox(
                                                     width: 3.w,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        product.title
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                  SizedBox(
+                                                    width: 90.sp,
+                                                    child: Text(
+                                                      product.title.toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -277,21 +275,20 @@ class _ProductScreenState extends State<ProductScreen>
                                                   SizedBox(
                                                     width: 3.w,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        product.chooseCategory
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                  SizedBox(
+                                                    width: 90.sp,
+                                                    child: Text(
+                                                      product.chooseCategory
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -315,22 +312,20 @@ class _ProductScreenState extends State<ProductScreen>
                                                   SizedBox(
                                                     width: 3.w,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        product
-                                                            .productDescription
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                  SizedBox(
+                                                    width: 90.sp,
+                                                    child: Text(
+                                                      product.productDescription
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -389,7 +384,8 @@ class _ProductScreenState extends State<ProductScreen>
                     itemBuilder: (_, index) {
                       final int key = keys[index];
                       final ProductModel? product = products.get(key);
-
+                      // print(
+                      //     'variatiion ${product!.variation![index]['variation_group_name']}');
                       return product!.isApproved!
                           ? const SizedBox()
                           : Column(
@@ -501,21 +497,19 @@ class _ProductScreenState extends State<ProductScreen>
                                                   SizedBox(
                                                     width: 3.w,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        product.title
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                  SizedBox(
+                                                    width: 90.sp,
+                                                    child: Text(
+                                                      product.title.toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -539,21 +533,20 @@ class _ProductScreenState extends State<ProductScreen>
                                                   SizedBox(
                                                     width: 3.w,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        product.chooseCategory
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                  SizedBox(
+                                                    width: 90.sp,
+                                                    child: Text(
+                                                      product.chooseCategory
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -577,22 +570,20 @@ class _ProductScreenState extends State<ProductScreen>
                                                   SizedBox(
                                                     width: 3.w,
                                                   ),
-                                                  Column(
-                                                    children: [
-                                                      Text(
-                                                        product
-                                                            .productDescription
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          fontSize: 10.sp,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
+                                                  SizedBox(
+                                                    width: 90.sp,
+                                                    child: Text(
+                                                      product.productDescription
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        fontSize: 10.sp,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),

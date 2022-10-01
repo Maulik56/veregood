@@ -17,6 +17,7 @@ class TextConst {
   static String price = "Price";
   static String image = "Image";
   static String uploadImage = "Upload Images";
+  static String imageUploaded = "Images Uploaded";
   static String variation = "VARIATION";
   static String addVariation = "Add Variation";
   static String addAnotherVariation = "Add Another Variation";

@@ -5,6 +5,7 @@ import 'package:veregood_flutter/model/product_model_adapter.dart';
 import 'package:veregood_flutter/view/home_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:get/get.dart';
 
 const String productBoxName = "products";
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
     return Sizer(
       builder: (BuildContext context, Orientation orientation,
           DeviceType deviceType) {
-        return const MaterialApp(
+        return const GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'VereGood',
           home: HomePage(),

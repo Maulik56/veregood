@@ -1,20 +1,20 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 import 'package:sizer/sizer.dart';
-import 'package:veregood_flutter/components/create_variation_dialog.dart';
+import 'package:veregood_flutter/components/snack_bar_widget.dart';
 import 'package:veregood_flutter/components/textfield_widget.dart';
 import 'package:veregood_flutter/constant/color_const.dart';
 import 'package:veregood_flutter/main.dart';
 import 'package:veregood_flutter/model/product_model.dart';
 import 'package:veregood_flutter/view/product_screen.dart';
-
 import '../constant/text_const.dart';
+import '../controller/add_variation_controller.dart';
 
 class AddProductScreen extends StatefulWidget {
   final bool isVariationVisible;
@@ -31,6 +31,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final productDescription = TextEditingController();
   final quantity = TextEditingController();
   final price = TextEditingController();
+  final variationGroupName = TextEditingController();
+  final titleDialog = TextEditingController();
+  final uom = TextEditingController();
+  final priceDialog = TextEditingController();
+  final pickerDialog = ImagePicker();
+
+  List<XFile> variationCoverImage = [];
+
+  List<String> selectedImages = [];
+  AddVariationController _addVariationController =
+      Get.put(AddVariationController());
 
   File? coverImage;
 
@@ -68,6 +79,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   void initState() {
+    _addVariationController.listOfVariation.clear();
     productBox = Hive.box<ProductModel>(productBoxName);
     super.initState();
   }
@@ -127,13 +139,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             children: [
                               TextFieldWidget(
                                   hintText: TextConst.title1,
-                                  controller: title!),
+                                  controller: title),
                               SizedBox(
                                 height: 2.h,
                               ),
                               TextFieldWidget(
                                   hintText: TextConst.chooseCategory,
-                                  controller: chooseCategory!),
+                                  controller: chooseCategory),
                             ],
                           ),
                         )
@@ -270,75 +282,71 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           SizedBox(
                             height: 10.sp,
                           ),
-                          Container(
-                            height: 95.sp,
-                            width: double.infinity,
-                            color: Colors.white,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 4.w, right: 4.w, top: 3.h),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Available Colours",
-                                    style: TextStyle(
-                                      color: greyColor3,
-                                      fontSize: 15.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 2.h,
-                                  ),
-                                  Row(
-                                    children: List.generate(
-                                      5,
-                                      (index) => Padding(
-                                        padding: EdgeInsets.only(right: 3.w),
-                                        child: CircleAvatar(
-                                          backgroundColor: greyColor3,
+                          GetBuilder<AddVariationController>(
+                            builder: (controller) {
+                              return controller.addVariation.length == 0
+                                  ? SizedBox()
+                                  : Container(
+                                      height: 95.sp,
+                                      width: double.infinity,
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 4.w, right: 4.w, top: 3.h),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              controller.addVariation[0]
+                                                      ['title']
+                                                  .toString(),
+                                              style: TextStyle(
+                                                color: greyColor3,
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 2.h,
+                                            ),
+                                            controller.listOfVariation.length ==
+                                                    0
+                                                ? SizedBox()
+                                                : Row(
+                                                    children: List.generate(
+                                                      controller.listOfVariation
+                                                          .length,
+                                                      (index) => Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                right: 3.w),
+                                                        child: CircleAvatar(
+                                                          radius: 18.sp,
+                                                          backgroundImage:
+                                                              FileImage(
+                                                            File(
+                                                              controller
+                                                                      .listOfVariation[
+                                                                  index],
+                                                            ),
+                                                          ),
+                                                          backgroundColor:
+                                                              greyColor3,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    );
+                            },
                           ),
                           SizedBox(
                             height: 3.h,
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    backgroundColor: blueColor1,
-                                    insetPadding:
-                                        EdgeInsets.symmetric(horizontal: 15.w),
-                                    child: CreateVariationDialog()),
-                              );
-                            },
-                            child: Container(
-                              height: 50.sp,
-                              width: double.infinity,
-                              color: blueColor,
-                              child: Center(
-                                child: Text(
-                                  TextConst.addAnotherVariation,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13.sp,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          firstDialog(context),
                           SizedBox(
                             height: 2.h,
                           ),
@@ -349,33 +357,39 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       alignment: Alignment.centerRight,
                       child: GestureDetector(
                         onTap: () async {
-                          ProductModel model = ProductModel(
-                              coverImage: coverImage!.path,
-                              title: title.text,
-                              chooseCategory: chooseCategory.text,
-                              productDescription: productDescription.text,
-                              quantity: quantity.text,
-                              price: price.text,
-                              availableColours: ['0xffffff'],
-                              listOfImage: images,
-                              isApproved: false);
+                          if (coverImage != null &&
+                              title.text.isNotEmpty &&
+                              chooseCategory.text.isNotEmpty &&
+                              productDescription.text.isNotEmpty &&
+                              quantity.text.isNotEmpty &&
+                              price.text.isNotEmpty &&
+                              additionalPhoto.length.toString().isNotEmpty) {
+                            ProductModel model = ProductModel(
+                                variation: _addVariationController.addVariation,
+                                coverImage: coverImage!.path,
+                                title: title.text,
+                                chooseCategory: chooseCategory.text,
+                                productDescription: productDescription.text,
+                                quantity: quantity.text,
+                                price: price.text,
+                                availableColours: ['0xffffff'],
+                                listOfImage: images,
+                                isApproved: false);
 
-                          productBox!.add(model).then((value) {
-                            if (value.toString().isNotEmpty) {
-                              Navigator.pop(context);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  // shape: RoundedRectangleBorder(
-                                  //   borderRadius: BorderRadius.circular(5),
-                                  // ),
-                                  duration: Duration(seconds: 1),
-                                  content: Text("Failed"),
-                                ),
-                              );
-                            }
-                          });
+                            productBox!.add(model).then((value) {
+                              if (value.toString().isNotEmpty) {
+                                Navigator.pop(context);
+                              } else {
+                                CommonSnackBar.getSnackBar(
+                                    context: context, message: "Failed");
+                              }
+                            });
+                          } else {
+                            CommonSnackBar.getSnackBar(
+                                context: context,
+                                message:
+                                    "Please enter all the required fields");
+                          }
                         },
                         child: Container(
                           height: 45.sp,
@@ -405,6 +419,331 @@ class _AddProductScreenState extends State<AddProductScreen> {
         ),
       ),
     );
+  }
+
+  GestureDetector firstDialog(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              backgroundColor: blueColor1,
+              insetPadding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 8.w,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          TextConst.createNewVariation,
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 13.sp),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SvgPicture.asset(
+                            'assets/images/close.svg',
+                            height: 27.sp,
+                            width: 27.sp,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                    TextFieldWidget(
+                        hintText: TextConst.variationGroupName,
+                        controller: variationGroupName),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/check-square.svg',
+                          height: 27.sp,
+                          width: 27.sp,
+                        ),
+                        Text(
+                          TextConst.variationGroupName,
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 13.sp),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (variationGroupName.text.isNotEmpty) {
+                          Navigator.pop(context);
+                          _addVariationController.listOfVariation.clear();
+                          secondDialog(context).then((value) {
+                            setState(() {});
+                          });
+                        } else {
+                          CommonSnackBar.getSnackBar(
+                              context: context,
+                              message: 'Please enter variation group name');
+                        }
+                      },
+                      child: Container(
+                        height: 40.sp,
+                        width: 80.sp,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: Text(
+                            TextConst.submit,
+                            style: const TextStyle(
+                                color: blueColor, fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 4.h,
+                    ),
+                  ],
+                ),
+              )),
+        );
+      },
+      child: Container(
+        height: 50.sp,
+        width: double.infinity,
+        color: blueColor,
+        child: Center(
+          child: Text(
+            TextConst.addAnotherVariation,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> secondDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return GetBuilder<AddVariationController>(
+            builder: (controller) {
+              return Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: blueColor1,
+                  insetPadding: EdgeInsets.symmetric(horizontal: 15.w),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              TextConst.createNewVariation,
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 13.sp),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: SvgPicture.asset(
+                                'assets/images/close.svg',
+                                height: 27.sp,
+                                width: 27.sp,
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            final List<XFile>? obtainedFile =
+                                await picker.pickMultiImage();
+
+                            if (obtainedFile != null) {
+                              _addVariationController.listOfVariation.clear();
+                              variationCoverImage.addAll(obtainedFile);
+                              obtainedFile.forEach((element) {
+                                _addVariationController.listOfVariation
+                                    .add(element.path);
+                              });
+                              // variationCoverImage.map((e) {
+                              //   selectedImages.add(e.path.toString());
+                              // });
+                              log('image for variation ${obtainedFile} full ${_addVariationController.listOfVariation}');
+                              setState(() {});
+                            } else {
+                              log('canceled');
+                            }
+                          },
+                          child: Container(
+                            height: 51.sp,
+                            width: 75.sp,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: RDottedLineBorder.all(
+                                  width: 1, color: Colors.grey),
+                            ),
+                            child: Center(
+                              child: controller.listOfVariation.length == 0
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/upload_image.png',
+                                          height: 15.sp,
+                                          width: 15.sp,
+                                        ),
+                                        SizedBox(
+                                          height: 1.h,
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            TextConst.uploadImage,
+                                            style: TextStyle(
+                                                color: greyColor2,
+                                                fontSize: 8.sp),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Align(
+                                      alignment: Alignment.center,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 5.w),
+                                        child: Text(
+                                          TextConst.imageUploaded,
+                                          style: TextStyle(
+                                              color: greenColor,
+                                              fontSize: 11.sp),
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        TextFieldWidget(
+                            hintText: TextConst.title1,
+                            controller: titleDialog),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        TextFieldWidget(
+                            hintText: TextConst.uom, controller: uom),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        TextFieldWidget(
+                          hintText: TextConst.price,
+                          controller: priceDialog,
+                          keyBoardType: TextInputType.number,
+                        ),
+                        SizedBox(
+                          height: 3.h,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if (_addVariationController
+                                        .listOfVariation.length !=
+                                    0 &&
+                                titleDialog.text.isNotEmpty &&
+                                uom.text.isNotEmpty &&
+                                priceDialog.text.isNotEmpty) {
+                              _addVariationController.addVariation.add({
+                                'variation_group_name': variationGroupName.text,
+                                'image': selectedImages,
+                                'title': titleDialog.text,
+                                'uom': uom.text,
+                                'price': priceDialog.text
+                              });
+                              Navigator.pop(context);
+                            } else {
+                              CommonSnackBar.getSnackBar(
+                                  context: context,
+                                  message:
+                                      'Please enter all the required fields');
+                            }
+                          },
+                          child: Container(
+                            height: 40.sp,
+                            width: 80.sp,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                            ),
+                            child: Center(
+                              child: Text(
+                                TextConst.add,
+                                style: const TextStyle(
+                                    color: blueColor,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4.h,
+                        ),
+                      ],
+                    ),
+                  ));
+            },
+          );
+        },
+      ),
+    ).then((value) {
+      if (titleDialog.text.isNotEmpty &&
+          uom.text.isNotEmpty &&
+          priceDialog.text.isNotEmpty &&
+          _addVariationController.listOfVariation.length != 0) {
+        titleDialog.clear();
+        uom.clear();
+        priceDialog.clear();
+        variationGroupName.clear();
+      } else {
+        _addVariationController.listOfVariation.clear();
+      }
+    });
   }
 
   Container appHeader() {
@@ -451,5 +790,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
         ],
       ),
     );
+  }
+
+  void selectVariationCoverImage() async {
+    final List<XFile>? obtainedFile = await picker.pickMultiImage();
+
+    if (obtainedFile != null) {
+      _addVariationController.listOfVariation.clear();
+      variationCoverImage.addAll(obtainedFile);
+      obtainedFile.forEach((element) {
+        _addVariationController.listOfVariation.add(element.path);
+      });
+      // variationCoverImage.map((e) {
+      //   selectedImages.add(e.path.toString());
+      // });
+      log('image for variation ${obtainedFile} full ${_addVariationController.listOfVariation}');
+      setState(() {});
+    } else {
+      log('canceled');
+    }
   }
 }

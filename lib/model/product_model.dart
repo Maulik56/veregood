@@ -20,6 +20,8 @@ class ProductModel {
   final List<String>? availableColours;
   @HiveField(8)
   final bool? isApproved;
+  @HiveField(9)
+  final List<dynamic>? variation;
 
   ProductModel({
     this.availableColours,
@@ -31,5 +33,6 @@ class ProductModel {
     this.coverImage,
     this.chooseCategory,
     this.isApproved,
+    this.variation,
   });
 }
